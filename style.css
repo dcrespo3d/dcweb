@@ -15,8 +15,8 @@ a:hover {
 .btn-secondary:focus {
   color: #333;
   text-shadow: none; /* Prevent inheritance from `body` */
-  background-color: #fffcf0;
-  border: .05rem solid #fffcf0;
+  background-color: #00ccf0;
+  border: .05rem solid #00ccf0;
 }
 
 
@@ -57,14 +57,14 @@ body {
 .nav-masthead .nav-link {
   padding: .25rem 0;
   font-weight: 700;
-  color: rgba(255, 255, 255, .5);
+  color: rgba(0, 204, 240, .5);
   background-color: transparent;
   border-bottom: .25rem solid transparent;
 }
 
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(255, 255, 255, .25);
+  border-bottom-color: rgba(0, 204, 240, .25);
 }
 
 .nav-masthead .nav-link + .nav-link {
@@ -72,8 +72,8 @@ body {
 }
 
 .nav-masthead .active {
-  color: #fffcf0;
-  border-bottom-color: #fffcf0;
+  color: #00ccf0;
+  border-bottom-color: #00ccf0;
 }
 
 @media (min-width: 48em) {
