@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Espirales de Fibonacci</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="common.css" />
+    <script src="ezdraw.js"></script>
+    <script src="common.js"></script>
+
+<script>
+
+</script>
+
+    <style>
+
+.ezdraw_container {
+    height: 400px;
+    margin: 2em auto 2em auto;
+    max-width: 400px;
+}
+
+.image_container {
+    margin: 1em auto 1em auto;
+}
+
+.image_element {
+    width: 360px;
+    height: 360px;
+    background-size: 100%;
+    margin: 0 auto;
+}
+
+#sunflower {
+    background-image:url(./sunflower.jpg)
+}
+
+#sunflower-spirals-1 {
+    background-image:url(./sunflower-spirals-1.jpg)
+}
+
+#sunflower-spirals-2 {
+    background-image:url(./sunflower-spirals-2.jpg)
+}
+
+pre {
+    margin-left: 1em;
+    font-size: 1.25em;
+}
+
+li {
+    margin-top: -0.5em;
+    margin-bottom: -0.5em;
+}
+
+#ez01_values,
+#ez02_values,
+#ez03_values,
+#ez05_values,
+#ez06_values,
+#ez07_values,
+#ez08_values,
+#ez09_values,
+#ez10_values,
+#ez11_values,
+#ez12_values {
+    margin-top: -2em;
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+#ez01_val_x,
+#ez02_val_x,
+#ez12_val_n1 {
+    margin-right: 2.5em;
+    color: #C60;
+}
+
+#ez01_val_y,
+#ez02_val_y,
+#ez12_val_n2 {
+    margin-left: 2.5em;
+    color: #06F;
+}
+
+#ez12_val_n1,
+#ez12_val_n2,
+#ez12_val_i {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+
+#ez01_slider_x_container .slider_knob,
+#ez02_slider_x_container .slider_knob {
+    background: #C60;
+}
+
+#ez01_slider_y_container .slider_knob,
+#ez02_slider_y_container .slider_knob {
+    background: #06F;
+}
+
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div class="article">
+            <H1>Espirales de Fibonacci</H1>
+            <p><i>Escrito y programado por David Crespo</i></p>
+            <p style="margin-top:-1em;"><i>Madrid, Febrero de 2020</i></p>
+            <p>Desde hace algún tiempo me ha interesado la geometría de las espirales del girasol (y de otras plantas, desde margaritas a piñas) y he dedicado algún tiempo a escribir programas para dibujarlas en detalle.</p>
+            <p>Si nos fijamos en un girasol, se puede ver que sus flores (que acabarán convertidas en deliciosas pipas) están dispuestas formando espirales entrecruzadas.</p>
+            <div class="image_container">
+                <div class="image_element" id="sunflower"></div>
+            </div>
+            <p>Lo que no es tan evidente es que el número de espirales es siempre un número de la serie de Fibonacci. Si contamos espirales en un sentido (color azul), obtenemos 34 espirales.</p>
+            <div class="image_container">
+                <div class="image_element" id="sunflower-spirals-1"></div>
+            </div>
+            <p>Si contamos espirales en el otro sentido (color rojo), obtenemos 55 espirales. Tanto 34 como 55 pertenecen a la serie de Fibonacci.</p>
+            <div class="image_container">
+                <div class="image_element" id="sunflower-spirals-2"></div>
+            </div>
+            <p>Si contamos el número de espirales en ambos sentidos en un girasol, una margarita o una piña, obtendremos dos términos consecutivos de la serie de Fibonacci. Cuantas más semillas (o puntos) tenga la planta, obtendremos números más grandes. Por ejemplo en un girasol con pocas semillas tendríamos espirales de 21 y 34, si tuviera más serían 34 y 55, si tuviera muchas serían 55 y 89. El motivo lo veremos más adelante en este artículo.</p>
+            <p>La serie de Fibonacci es una serie de números muy sencilla de obtener:</p>
+            <ul>
+                <li>Cada término es la suma de los dos anteriores.</li>
+                <li>Los dos primeros términos de la serie son 0 y 1.</li>
+            </ul>
+            <p>Con estas dos reglas, obtenemos la secuencia</p>
+            <pre style="white-space: pre-wrap;">0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89...</pre>
+            <p>Cada término, salvo los dos primeros, se calcula sumando los dos anteriores:</p>
+            <pre>t1  =   0</pre>
+            <pre>t2  =   1</pre>
+            <pre>t3  =   1  =  0 +  1  =  t1 + t2</pre>
+            <pre>t4  =   2  =  1 +  1  =  t2 + t3</pre>
+            <pre>t5  =   3  =  1 +  2  =  t3 + t4</pre>
+            <pre>t6  =   5  =  2 +  3  =  t4 + t5</pre>
+            <pre>t7  =   8  =  3 +  5  =  t5 + t6</pre>
+            <pre>t8  =  13  =  5 +  8  =  t6 + t7</pre>
+            <pre>t9  =  21  =  8 + 13  =  t7 + t8</pre>
+            <pre>...</pre>
+            <p>Una propiedad de la serie de Fibonacci es que la proporción entre un término y el anterior, segun vamos avanzando en la serie, tiende al número áureo Φ (Phi):</p>
+            <pre>Φ = (1 + √<span style="text-decoration: overline">5</span>) / 2</pre>
+            <pre>Φ ≃ 1.61803398874...</pre>
+            <pre></pre>
+            <pre> 2  /  1   =  2</pre>
+            <pre> 3  /  2   =  1.5</pre> 
+            <pre> 5  /  3   =  1.666...</pre>
+            <pre> 8  /  5   =  1.6</pre>
+            <pre>13  /  8   =  1.625</pre>
+            <pre>21  /  13  =  1.615384...</pre>
+            <pre>34  /  21  =  1.619047...</pre>
+            <pre>55  /  34  =  1.61764705...</pre>
+            <pre>89  /  55  =  1.6181818....</pre>
+            <p>Cuanto mayores los términos, más se aproxima su razón a Φ.</p>
+            <p>Voy a empezar a plantear algunos requisitos preliminares para dibujar una figura parecida a un girasol. Para ello tengo que dibujar en coordenadas polares, vamos a ver su relación con las coordenadas cartesianas.</p>
+            <p>Las coordenadas cartesianas son las más habituales, el eje X es el eje horizontal (permite mover un punto de izquierda a derecha) y el eje Y el vertical (permite moverlo de arriba a abajo). Con dos números (x, y) podemos definir una posición en un plano bidimensional.</p>
+            
+            <div class="ezdraw_container">
+                <canvas id="ez01"></canvas>
+            </div>
+            <p id="ez01_values"><span id="ez01_val_x">x = XX</span>&nbsp;<span id="ez01_val_y">y = YY</span></p>
+            <div id="ez01_slider_x_container"></div>
+            <div id="ez01_slider_y_container"></div>
+
+            <p>Las coordenadas polares también permiten definir la posición de un punto mediante dos números, pero esos dos números representan la posición del punto en una circunferencia:</p>
+            <ul>
+                <li>La distancia del punto al origen (r)</li>
+                <li>El ángulo del punto con respecto a una dirección de referencia (α, en radianes)</li>
+            </ul>
+
+            <div class="ezdraw_container">
+                <canvas id="ez02"></canvas>
+            </div>
+            <p id="ez02_values"><span id="ez02_val_x">r = RR</span>&nbsp;<span id="ez02_val_y">a = A.AA</span></p>
+            <div id="ez02_slider_x_container"></div>
+            <div id="ez02_slider_y_container"></div>
+
+            <p>El ángulo en radianes, entre 0 y 2π, se corresponde con un ángulo en grados entre 0 y 360º.</p>
+            <p>Para obtener coordenadas cartesianas (x,&nbsp;y) a partir de coordenadas polares (r,&nbsp;α) emplearíamos las ecuaciones:</p>
+            <pre>x = r · cos(α)</pre>
+            <pre> </pre>
+            <pre>y = r · sin(α)</pre>
+            <pre> </pre>
+
+            <p>Ántes de dibujar un girasol, vamos a empezar dibujando una espiral sencilla. Para ello, utilizamos la siguiente expresión en coordenadas polares:</p>
+            <pre>r = t</pre>
+            <pre> </pre>
+            <pre>α = 2 · π · t</pre>
+            <pre> </pre>
+
+            <p>Siendo t un parámetro real que va entre 0 y tmax = 20 en este ejemplo.</p>
+
+            <div class="ezdraw_container">
+                <canvas id="ez03"></canvas>
+            </div>
+            <p id="ez03_values"><span id="ez03_val_t">t=TT</span></p>
+            <div id="ez03_slider_container"></div>
+
+            <p>En el gráfico anterior, los valores reales (enteros y no enteros) de t producen la espiral, mientras que los puntos corresponden a los valores enteros de t.</p>
+            <p>Para la expresión anterior, las semillas estarían en línea, partiendo desde el centro. Una expresión más interesante sería:</p>
+            <pre>r = t</pre>
+            <pre> </pre>
+            <pre>     2 · π · t </pre>
+            <pre>α = ———————————</pre>
+            <pre>         k     </pre>
+            <pre> </pre>
+
+            <p>Para valores enteros de k, tenemos semillas que se distribuyen en k ramas. Por ejemplo, para k = 2, tenemos una nueva semilla cada media vuelta y por lo tanto tenemos dos ramas; para k = 3 tenemos una nueva semilla cada tercio de vuelta y por lo tanto 3 ramas.</p>
+
+            <div class="ezdraw_container">
+                <canvas id="ez04"></canvas>
+            </div>
+            <div id="ez04_seg_container"></div>
+            <p></p>
+            <p>Pero esta distribución de semillas en líneas rectas no sucede en el girasol, que tiende a empaquetar sus semillas de una manera más compacta, sin dejar huecos.</p>
+            
+            <p>Para dibujar algo parecido a un girasol, necesitamos utilizar un valor de k igual a Φ, el número áureo:</p>
+            <pre>k = Φ = 1.61803398874...</pre>
+
+            <div class="ezdraw_container">
+                <canvas id="ez05"></canvas>
+            </div>
+            <p id="ez05_values"><span id="ez05_val_t">t=TT</span></p>
+            <div id="ez05_slider_container"></div>
+
+            <p>Podemos definir cada semilla mediante sus coordenadas polares (r, α). Para 2 semillas consecutivas, con ángulos α<sub>1</sub> y α<sub>2</sub>, el ángulo que forman es de</p>
+
+            <pre>               2 · π </pre>
+            <pre>Δα = α<sub>2</sub> - α<sub>1</sub> = ———————  =  2 · π · φ</pre>
+            <pre>                 Φ   </pre>
+
+            <p>siendo φ (phi minúscula) el inverso de Φ (Phi mayúscula)</p>
+
+            <pre>      1  </pre>
+            <pre>φ = ————— = 0.61803398874...</pre>
+            <pre>      Φ  </pre>
+
+            <div class="ezdraw_container">
+                <canvas id="ez06"></canvas>
+            </div>
+            <p id="ez06_values"><span id="ez06_val_t">t=TT</span></p>
+            <div id="ez06_slider_container"></div>
+
+            <p>El ángulo entre semillas consecutivas es algo más de media vuelta (~0.618 · 2π), o lo que es lo mismo, φ (phi minúscula) veces una vuelta completa.</p>
+
+            <p>Llegados a este punto, podemos escribir la ecuación básica para las semillas del girasol como:</p>
+
+            <pre>r = i</pre>
+            <pre> </pre>
+            <pre>α = i · 2 · π · φ</pre>
+            <pre> </pre>
+
+            <p>Siendo i un número entero positivo, al que llamaremos índice de semilla.</p>
+            <p>En la siguiente figura dibujamos únicamente las semillas. Podemos ver que al aumentar el número de semillas empezamos a poder ver espirales como las del girasol:</p>
+
+            <div class="ezdraw_container">
+                <canvas id="ez07"></canvas>
+            </div>
+            <p id="ez07_values"><span id="ez07_val_t">t=TT</span></p>
+            <div id="ez07_slider_container"></div>
+
+            <p>Un detalle importante es que percibimos las espirales uniendo los puntos, es decir, considerando que semillas cercanas forman parte de la misma línea.</p>
+            <p>Para entender cómo aparecen los términos de la serie de Fibonacci en las espirales del girasol, necesitamos numerar las semillas. En la siguiente figura, dentro de cada semilla, se dibuja su índice:</p>
+
+            <div class="ezdraw_container">
+                <canvas id="ez08"></canvas>
+            </div>
+            <p id="ez08_values"><span id="ez08_val_t">t=TT</span></p>
+            <div id="ez08_slider_container"></div>
+            <div id="ez08_seg_container"></div>
+
+            <p>Con las semillas numeradas, ahora dibujaré líneas que unan parejas de semillas entre sí, de modo que la semilla de índice i se unirá con la semilla de índice i&nbsp;+&nbsp;N.</p>
+
+            <p>N es un número perteneciente a la serie de Fibonacci, y para un N dado, habrá N espirales dibujadas mediante segmentos rectos. Por ejemplo, para N = 5, hay 5 espirales:</p>
+
+            <pre>la que une 0 con 5 con 10 con 15...</pre>
+            <pre>la que une 1 con 6 con 11 con 16...</pre>
+            <pre>la que une 2 con 7 con 12 con 17...</pre>
+            <pre>la que une 3 con 8 con 13 con 18...</pre>
+            <pre>la que une 4 con 9 con 14 con 19...</pre>
+
+            <div class="ezdraw_container">
+                <canvas id="ez09"></canvas>
+            </div>
+            <p id="ez09_values"><span id="ez09_val_t">t=TT</span></p>
+            <div id="ez09_slider_container"></div>
+            <div id="ez09_seg_container"></div>
+
+            <pre> </pre>
+
+            <p>Una propiedad interesante de las espirales con parámetro N es que son adecuadas para un rango determinado de semillas. Un segmento de espiral "adecuada" debe unir semillas cercanas entre sí.</p>
+            <p>Cuando un segmento une semillas alejadas entre sí deja de ser adecuado. Por ejemplo, en la figura anterior, ajustamos el valor de i<sub>max</sub> al valor máximo (99) y dibujamos la espiral para N = 5.</p>
+            <p>Si nos fijamos en la parte de abajo, en la semilla 74, vemos que se une con la 79(74+5), que está bastante más lejos que la 82(74+8), la 87(74+13), y la 95(74+21).</p>
+            <p>En la siguiente figura se puede ver en detalle:</p>
+
+            <div class="ezdraw_container">
+                <canvas id="ez10"></canvas>
+            </div>
+            <p id="ez10_values"><span id="ez10_val_t">t=TT</span></p>
+            <div id="ez10_slider_container"></div>
+            <div id="ez10_seg_container"></div>
+
+            <pre> </pre>
+
+            <p>Todavía no hemos visto qué sucede cuando utilizamos un parámetro N para conectar semillas que NO forma parte de la serie de fibonacci. Lo que sucede es que se conectan semillas alejadas entre sí, que nunca formarían una espiral a simple vista.</p>
+
+            <div class="ezdraw_container">
+                <canvas id="ez11"></canvas>
+            </div>
+            <p id="ez11_values"><span id="ez11_val_t">t=TT</span></p>
+            <div id="ez11_slider_container"></div>
+            <div id="ez11_seg_container"></div>
+
+            <pre> </pre>
+
+            <p>En la siguiente figura dibujaremos dos juegos de espirales con parámetros N<sub>1</sub> y N<sub>2</sub>, términos consecutivos de la serie de Fibonacci.</p>
+            <p>De las dos espirales, una gira en un sentido y la otra en sentido contrario, y al entrecruzarse se forman cuadriláteros.</p>
+
+            <div class="ezdraw_container">
+                <canvas id="ez12"></canvas>
+            </div>
+            <p id="ez12_values"><span id="ez12_val_n1">n1 = NN</span>&nbsp;<span id="ez12_val_n2">n2 = NN</span>&nbsp;<span id="ez12_val_i">i = ii</span></p>
+            <div id="ez12_slider_container"></div>
+            <div id="ez12_seg_container"></div>
+
+            <pre> </pre>
+
+            <p>Una vez más, vemos que cuanto más los parámetros N<sub>1</sub> y N<sub>2</sub>, más adecuados son para valores más altos del índice de semilla.</p>
+            <p>En la figura anterior, los valores más adecuados son:</p>
+
+            <pre>N<sub>1</sub> =  8 y N<sub>2</sub> = 13 para i<sub>max</sub> ≃  100</pre>
+            <pre>N<sub>1</sub> = 13 y N<sub>2</sub> = 21 para i<sub>max</sub> ≃  220</pre>
+            <pre>N<sub>1</sub> = 21 y N<sub>2</sub> = 34 para i<sub>max</sub> ≃  460</pre>
+            <pre>N<sub>1</sub> = 34 y N<sub>2</sub> = 55 para i<sub>max</sub> ≃ 1000</pre>
+            <pre> </pre>
+
+            <p>En este contexto, "adecuado" significa que el cuadrilátero resultante es lo más parecido posible a un cuadrado (y menos parecido a un romboide).</p>
+
+            <pre> </pre>
+            
+            <p><i>Continuará...</i></p>
+        </div>
+    </div>
+
+<script>
+let bgcolor = "#F8F8F8";    
+let fgcolor = "#222";
+let color1 = "#C60";
+let color2 = "#06F";
+let color3 = "#380";
+let color4 = "#FDA";
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez01 = createEZDraw('ez01');
+ez01.vmax = 100;
+ez01.x = 64;
+ez01.y = 32;
+ez01.draw = function() {
+    ez01.clear(bgcolor);
+    let v = ez01.vmax;
+    let x = ez01.x;
+    let y = ez01.y;
+    ez01.xlimits(-v,v);
+    ez01.ylimits(-v,v);
+
+    ez01.linewidth(1.5);
+    ez01.linecolor(fgcolor);
+    ez01.line(-v,0,v,0);
+    ez01.line(0,-v,0,v);
+
+    ez01.linewidth(0.75);
+    ez01.linecolor(color1);
+    ez01.line(x, -v, x, v);
+    ez01.linecolor(color2);
+    ez01.line(-v, y, v, y);
+
+    ez01.linewidth(0.75);
+    ez01.linecolor(fgcolor);
+    ez01.fillcolor(bgcolor)
+    ez01.circle(x,y,2.5);
+}
+
+window.addEventListener('load', function(){
+    ez01.setup();
+    ez01.onResize();
+
+    let ez01_val_x = document.getElementById('ez01_val_x');
+    new Slider(document.getElementById('ez01_slider_x_container'), function (x) {
+        ez01.x = -100 + 200 * x;
+        ez01_val_x.innerHTML = 'x = ' + parseInt(ez01.x);
+        ez01.run();
+    }, undefined, 0.8);
+
+    let ez01_val_y = document.getElementById('ez01_val_y');
+    new Slider(document.getElementById('ez01_slider_y_container'), function (y) {
+        ez01.y = -100 + 200 * y;
+        ez01_val_y.innerHTML = 'y = ' + parseInt(ez01.y);
+        ez01.run();
+    }, undefined, 0.65);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let polar = function(r, a)
+{
+    let x = r * Math.cos(a);
+    let y = r * Math.sin(a);
+    return {x:x,y:y};
+}
+
+let polar2 = function(r, a)
+{
+    let x = r * Math.cos(a);
+    let y = -r * Math.sin(a);
+    return {x:x,y:y};
+}
+
+let ez02 = createEZDraw('ez02');
+ez02.vmax = 100;
+ez02.r = 64;
+ez02.a = 0.7;
+ez02.draw = function() {
+    ez02.clear(bgcolor);
+    let v = ez02.vmax;
+    let r = ez02.r;
+    let a = ez02.a;
+    let p = polar(r,a);
+    let x = p.x;
+    let y = p.y;
+    let pv = polar(v,a)
+    ez02.xlimits(-v,v);
+    ez02.ylimits(-v,v);
+
+    ez02.linewidth(1.5);
+    ez02.linecolor(fgcolor);
+    ez02.line(-v,0,v,0);
+    ez02.line(0,-v,0,v);
+
+    ez02.linewidth(0.75);
+    ez02.fillcolor();
+    ez02.linecolor(color1);
+    ez02.circle(0, 0, r);
+    ez02.linecolor(color2);
+    ez02.line(0, 0, pv.x, pv.y);
+
+    ez02.linewidth(0.75);
+    ez02.linecolor(fgcolor);
+    ez02.fillcolor(bgcolor)
+    ez02.circle(x,y,2.5);
+}
+
+window.addEventListener('load', function(){
+    ez02.setup();
+    ez02.onResize();
+
+    let ez02_val_x = document.getElementById('ez02_val_x');
+    new Slider(document.getElementById('ez02_slider_x_container'), function (x) {
+        ez02.r = 100 * x;
+        ez02_val_x.innerHTML = 'r = ' + parseInt(ez02.r);
+        ez02.run();
+    }, undefined, 0.64);
+
+    let ez02_val_y = document.getElementById('ez02_val_y');
+    new Slider(document.getElementById('ez02_slider_y_container'), function (y) {
+        ez02.a =  2 * Math.PI * y;
+        ez02_val_y.innerHTML = 'α = ' + parseInt(100*ez02.a)/100;
+        ez02.run();
+    }, undefined, 0.1);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez03 = createEZDraw('ez03');
+ez03.tmax = 20.001;
+ez03.draw = function() {
+    ez03.clear(bgcolor);
+
+    ez03.xlimits(-20,20);
+    ez03.ylimits(-20,20);
+
+    function fun(k, t) {
+        return polar (t, 2*Math.PI*k*t);
+    }
+
+    let delta = 0.01;
+    let tmax = ez03.tmax;
+    let k = 1 / 1;
+    for (let t = delta; t <= tmax; t += delta)
+    {
+        let p1 = fun(k, t-delta);
+        let p2 = fun(k, t);
+        ez03.line(p1.x,p1.y,p2.x,p2.y);
+    }
+
+    ez03.fillcolor(color4);
+
+    for (t = 0; t <= tmax; t++)
+    {
+        let p = fun(k, t);
+        ez03.circle(p.x, p.y, 0.25);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez03.setup();
+    ez03.onResize();
+
+    let ez03_val_x = document.getElementById('ez03_val_t');
+    new Slider(document.getElementById('ez03_slider_container'), function (x) {
+        ez03.tmax = 20.001 * x;
+        ez03_val_x.innerHTML = 't<sub>max</sub> = ' + parseInt(100 * ez03.tmax) / 100;
+        ez03.run();
+    }, undefined, 1);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez04 = createEZDraw('ez04');
+ez04.tmax = 20.001;
+ez04.k = 1;
+ez04.draw = function() {
+    ez04.clear(bgcolor);
+
+    ez04.xlimits(-20,20);
+    ez04.ylimits(-20,20);
+
+    function fun(k, t) {
+        return polar (t, 2*Math.PI*k*t);
+    }
+
+    let delta = 0.01;
+    let tmax = ez04.tmax;
+    let k = 1 / ez04.k;
+    for (let t = delta; t <= tmax; t += delta)
+    {
+        let p1 = fun(k, t-delta);
+        let p2 = fun(k, t);
+        ez04.line(p1.x,p1.y,p2.x,p2.y);
+    }
+
+    ez04.fillcolor(color4);
+
+    for (t = 0; t <= tmax; t++)
+    {
+        let p = fun(k, t);
+        ez04.circle(p.x, p.y, 0.25);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez04.setup();
+    ez04.onResize();
+
+    let ez04_val_x = document.getElementById('ez04_val_t');
+    new SegmentedControl(document.getElementById('ez04_seg_container'), function (x) {
+            ez04.k = 1 + x;
+            ez04.run();
+        },
+        ['k = 1', 'k = 2', 'k = 3', 'k = 4', 'k = 5']
+    );
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez05 = createEZDraw('ez05');
+ez05.tmax = 20.001;
+ez05.draw = function() {
+    ez05.clear(bgcolor);
+
+    let lim = 2 + ez05.tmax;
+    ez05.xlimits(-lim,lim);
+    ez05.ylimits(-lim,lim);
+
+    function fun(k, t) {
+        return polar (t, 2*Math.PI*k*t);
+    }
+
+    ez05.linewidth(0.04);
+
+    let delta = 0.01;
+    let tmax = ez05.tmax;
+    let k = 0.61803398874;
+    for (let t = delta; t <= tmax; t += delta)
+    {
+        let p1 = fun(k, t-delta);
+        let p2 = fun(k, t);
+        ez05.line(p1.x,p1.y,p2.x,p2.y);
+    }
+
+    ez05.fillcolor(color4);
+    ez05.linewidth(0.02 + lim/100);
+
+    for (t = 0; t <= tmax; t++)
+    {
+        let p = fun(k, t);
+        ez05.circle(p.x, p.y, 0.25 + lim/50);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez05.setup();
+    ez05.onResize();
+
+    let ez05_val_x = document.getElementById('ez05_val_t');
+    new Slider(document.getElementById('ez05_slider_container'), function (x) {
+        ez05.tmax = 100.001 * x * x;
+        ez05_val_x.innerHTML = 't<sub>max</sub> = ' + parseInt(100 * ez05.tmax) / 100;
+        ez05.run();
+    }, undefined, 0.4);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez06 = createEZDraw('ez06');
+ez06.tmax = 20.001;
+ez06.draw = function() {
+    ez06.clear(bgcolor);
+
+    let lim = 2 + ez06.tmax;
+    ez06.xlimits(-lim,lim);
+    ez06.ylimits(-lim,lim);
+
+    let k = 0.61803398874;
+
+    function fun(k, t) {
+        return polar (t, 2*Math.PI*k*t);
+    }
+
+    let v2 = ez06.tmax + 0.381966;
+    let v1 = ez06.tmax - 0.618034;
+
+    let i2 = parseInt(v2);
+    let i1 = parseInt(v1);
+
+    let a2 = 2 * Math.PI * i2 * k;
+    let a1 = 2 * Math.PI * i1 * k;
+
+    let alpha = 5 * Math.abs(v1 - parseInt(v1 + 0.5));
+    if (alpha > 1) alpha = 1;
+
+    ez06.ctx().globalAlpha = alpha;
+
+    ez06.linewidth(0);
+    ez06.fillcolor(color2);
+    ez06.circsect(0, 0, 2+ez06.tmax, a1, a2);
+
+    ez06.ctx().globalAlpha = 1;
+
+    ez06.linewidth(0.04);
+
+    let delta = 0.01;
+    let tmax = ez06.tmax;
+    for (let t = delta; t <= tmax; t += delta)
+    {
+        let p1 = fun(k, t-delta);
+        let p2 = fun(k, t);
+        ez06.line(p1.x,p1.y,p2.x,p2.y);
+    }
+
+    ez06.linewidth(0.02 + lim/100);
+
+    for (t = 0; t <= tmax; t++)
+    {
+        if (t == 0 || t == i1 || t == i2) ez06.fillcolor(color2);
+        else                              ez06.fillcolor(color4);
+        let p = fun(k, t);
+        ez06.circle(p.x, p.y, 0.25 + lim/50);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez06.setup();
+    ez06.onResize();
+
+    let ez06_val_x = document.getElementById('ez06_val_t');
+    new Slider(document.getElementById('ez06_slider_container'), function (x) {
+        ez06.tmax = 2 + 8 * x;
+        ez06_val_x.innerHTML = 't<sub>max</sub> = ' + parseInt(100 * ez06.tmax) / 100;
+        ez06.run();
+    }, undefined, 0);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez07 = createEZDraw('ez07');
+ez07.tmax = 20.001;
+ez07.draw = function() {
+    ez07.clear(bgcolor);
+    ez07.yup = false;
+
+    let tmax = ez07.tmax;
+
+    let scl = 10;
+    let lim = scl * (2 + tmax);
+    ez07.xlimits(-lim,lim);
+    ez07.ylimits(-lim,lim);
+
+    let k = 0.61803398874;
+
+    function fun(k, t) {
+        return polar2 (t, 2*Math.PI*k*t);
+    }
+
+    ez07.linewidth(0.8 + lim/200);
+
+    let rseed = (0.4 + (tmax-2)/50) * scl;
+
+    for (t = 0; t <= tmax; t++)
+    {
+        ez07.fillcolor(color4);
+        let p = fun(k, t);
+        let t0 = t - 10;
+        if (t0 < 0) t0 = 0;
+        let rseed = scl * (0.4 + Math.sqrt(t) * 0.5);
+        ez07.circle(scl*p.x, scl*p.y, rseed);
+    }
+
+}
+
+window.addEventListener('load', function(){
+    ez07.setup();
+    ez07.onResize();
+
+    let ez07_val_x = document.getElementById('ez07_val_t');
+    new Slider(document.getElementById('ez07_slider_container'), function (x) {
+        ez07.tmax = Math.pow(10, 1+2*x);
+        ez07_val_x.innerHTML = 'i<sub>max</sub> = ' + parseInt(ez07.tmax);
+        ez07.run();
+    }, undefined, 0);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez08 = createEZDraw('ez08');
+ez08.tmax = 20.001;
+ez08.draw = function() {
+    ez08.clear(bgcolor);
+    ez08.yup = false;
+
+    let tmax = ez08.tmax;
+
+    let scl = 20;
+    let lim = scl * (2 + tmax);
+    ez08.xlimits(-lim,lim);
+    ez08.ylimits(-lim,lim);
+
+    let k = 0.61803398874;
+
+    function fun(k, t) {
+        return polar2 (t, 2*Math.PI*k*t);
+    }
+
+    ez08.linewidth(0.02 + lim/200);
+
+    let rseed = (0.4 + (tmax-2)/25) * scl;
+
+    let c = ez08.ctx();
+
+    c.font = "" + 1.4*rseed + "px Helvetica";
+    c.textBaseline = "middle";
+    c.textAlign = "center";
+
+    for (let t = 0; t <= tmax; t++)
+    {
+        ez08.fillcolor(color4);
+        let p = fun(k, t);
+        ez08.circle(scl*p.x, scl*p.y, rseed);
+        ez08.fillcolor(fgcolor);
+        c.fillText(''+t, scl*p.x, scl*p.y);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez08.setup();
+    ez08.onResize();
+
+    let ez08_val_x = document.getElementById('ez08_val_t');
+    new Slider(document.getElementById('ez08_slider_container'), function (x) {
+        ez08.tmax = 2 + 97 * x;
+        ez08_val_x.innerHTML = 'i<sub>max</sub> = ' + parseInt(ez08.tmax);
+        ez08.run();
+    }, undefined, 0.1958762886597938);
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez09 = createEZDraw('ez09');
+ez09.tmax = 20.001;
+ez09.draw = function() {
+    ez09.clear(bgcolor);
+    ez09.yup = false;
+
+    let tmax = ez09.tmax;
+
+    let scl = 20;
+    let lim = scl * (2 + tmax);
+    ez09.xlimits(-lim,lim);
+    ez09.ylimits(-lim,lim);
+
+    let k = 0.61803398874;
+
+    function fun(k, t) {
+        return polar2 (t, 2*Math.PI*k*t);
+    }
+
+    ez09.linewidth(0.02 + lim/200);
+
+    let sp = ez09.spval;
+
+    for (let iseg = 0; iseg < sp; iseg++)
+    {
+        for (let iseed = iseg; iseed <= tmax - sp; iseed += sp)
+        {
+            let p1 = fun(k, iseed);
+            let p2 = fun(k, iseed + sp);
+            ez09.line(scl*p1.x, scl*p1.y, scl*p2.x, scl*p2.y);
+        }
+    }
+
+    let rseed = (0.4 + (tmax-2)/25) * scl;
+
+    let c = ez09.ctx();
+
+    c.font = "" + 1.4*rseed + "px Helvetica";
+    c.textBaseline = "middle";
+    c.textAlign = "center";
+
+    for (let t = 0; t <= tmax; t++)
+    {
+        ez09.fillcolor(color4);
+        let p = fun(k, t);
+        ez09.circle(scl*p.x, scl*p.y, rseed);
+        ez09.fillcolor(fgcolor);
+        c.fillText(''+t, scl*p.x, scl*p.y);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez09.setup();
+    ez09.onResize();
+
+    let ez09_val_x = document.getElementById('ez09_val_t');
+    new Slider(document.getElementById('ez09_slider_container'), function (x) {
+        ez09.tmax = 2 + 97 * x;
+        ez09_val_x.innerHTML = 'i<sub>max</sub> = ' + parseInt(ez09.tmax);
+        ez09.run();
+    }, undefined, (19-2)/97);
+    let segs = ['1', '2', '3', '5', '8', '13', '21'];
+    new SegmentedControl(document.getElementById('ez09_seg_container'), function (x) {
+            ez09.spval = parseInt('0' + segs[x]);
+            ez09.run();
+        },
+        segs, 3
+    );
+    
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez10 = createEZDraw('ez10');
+ez10.tmax = 20.001;
+ez10.draw = function() {
+    ez10.clear(bgcolor);
+    ez10.yup = false;
+
+    let tmax = ez10.tmax;
+
+    let scl = 20;
+    let lim = scl * (2 + tmax);
+    ez10.xlimits(-lim*0.55,lim*0.45);
+    ez10.ylimits(0,lim);
+
+    let k = 0.61803398874;
+
+    function fun(k, t) {
+        return polar2 (t, 2*Math.PI*k*t);
+    }
+
+    ez10.linewidth(0.02 + lim/200);
+
+    let sp = ez10.spval;
+
+    for (let iseg = 0; iseg < sp; iseg++)
+    {
+        for (let iseed = iseg; iseed <= tmax - sp; iseed += sp)
+        {
+            let p1 = fun(k, iseed);
+            let p2 = fun(k, iseed + sp);
+            ez10.line(scl*p1.x, scl*p1.y, scl*p2.x, scl*p2.y);
+        }
+    }
+
+    let rseed = (0.4 + (tmax-2)/25) * scl;
+
+    let c = ez10.ctx();
+
+    c.font = "" + 1.4*rseed + "px Helvetica";
+    c.textBaseline = "middle";
+    c.textAlign = "center";
+
+    for (let t = 0; t <= tmax; t++)
+    {
+        ez10.fillcolor(color4);
+        let p = fun(k, t);
+        if (t == 74)
+            ez10.circle(scl*p.x, scl*p.y, rseed*1.2);
+        ez10.circle(scl*p.x, scl*p.y, rseed);
+        ez10.fillcolor(fgcolor);
+        c.fillText(''+t, scl*p.x, scl*p.y);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez10.setup();
+    ez10.onResize();
+
+    let ez10_val_x = document.getElementById('ez10_val_t');
+    ez10.tmax = 99;
+        ez10_val_x.innerHTML = 'i<sub>max</sub> = ' + parseInt(ez10.tmax);
+    let segs = ['N=5', 'N=8', 'N=13', 'N=21'];
+    new SegmentedControl(document.getElementById('ez10_seg_container'), function (x) {
+            ez10.spval = parseInt('0' + segs[x].replace('N=', ''));
+            //ez10.spval = 13;
+            ez10.run();
+        },
+        segs
+    );
+    
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez11 = createEZDraw('ez11');
+ez11.tmax = 20.001;
+ez11.draw = function() {
+    ez11.clear(bgcolor);
+    ez11.yup = false;
+
+    let tmax = ez11.tmax;
+
+    let scl = 20;
+    let lim = scl * (2 + tmax);
+    ez11.xlimits(-lim,lim);
+    ez11.ylimits(-lim,lim);
+
+    let k = 0.61803398874;
+
+    function fun(k, t) {
+        return polar2 (t, 2*Math.PI*k*t);
+    }
+
+    ez11.linewidth(0.02 + lim/200);
+
+    let sp = ez11.spval;
+
+    for (let iseg = 0; iseg < sp; iseg++)
+    {
+        for (let iseed = iseg; iseed <= tmax - sp; iseed += sp)
+        {
+            let p1 = fun(k, iseed);
+            let p2 = fun(k, iseed + sp);
+            ez11.line(scl*p1.x, scl*p1.y, scl*p2.x, scl*p2.y);
+        }
+    }
+
+    let rseed = (0.4 + (tmax-2)/25) * scl;
+
+    let c = ez11.ctx();
+
+    c.font = "" + 1.4*rseed + "px Helvetica";
+    c.textBaseline = "middle";
+    c.textAlign = "center";
+
+    for (let t = 0; t <= tmax; t++)
+    {
+        ez11.fillcolor(color4);
+        let p = fun(k, t);
+        ez11.circle(scl*p.x, scl*p.y, rseed);
+        ez11.fillcolor(fgcolor);
+        c.fillText(''+t, scl*p.x, scl*p.y);
+    }
+}
+
+window.addEventListener('load', function(){
+    ez11.setup();
+    ez11.onResize();
+
+    let ez11_val_x = document.getElementById('ez11_val_t');
+    ez11.tmax = 99;
+        ez11_val_x.innerHTML = 'i<sub>max</sub> = ' + parseInt(ez11.tmax);
+    let segs = ['8', '9', '10', '11', '12', '13'];
+    new SegmentedControl(document.getElementById('ez11_seg_container'), function (x) {
+            ez11.spval = parseInt('0' + segs[x]);
+            //ez11.spval = 13;
+            ez11.run();
+        },
+        segs, 2
+    );
+    
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+let ez12 = createEZDraw('ez12');
+ez12.tmax = 20.001;
+ez12.n1 = 34;
+ez12.n2 = 55;
+ez12.draw = function() {
+    ez12.clear(bgcolor);
+    ez12.yup = false;
+
+    let tmax = ez12.tmax;
+
+    let scl = 10;
+    let lim = scl * (2 + tmax);
+    ez12.xlimits(-lim,lim);
+    ez12.ylimits(-lim,lim);
+
+    let k = 0.61803398874;
+
+    function fun(k, t) {
+        return polar2 (t, 2*Math.PI*k*t);
+    }
+
+    ez12.linewidth(1.8 + lim/133);
+
+    ez12.linecolor(color1);
+    let sp = ez12.n1;
+    for (let iseg = 0; iseg < sp; iseg++)
+    {
+        for (let iseed = iseg; iseed <= tmax - sp; iseed += sp)
+        {
+            let p1 = fun(k, iseed);
+            let p2 = fun(k, iseed + sp);
+            ez12.line(scl*p1.x, scl*p1.y, scl*p2.x, scl*p2.y);
+        }
+    }
+
+    ez12.linecolor(color2);
+    sp = ez12.n2;
+    for (let iseg = 0; iseg < sp; iseg++)
+    {
+        for (let iseed = iseg; iseed <= tmax - sp; iseed += sp)
+        {
+            let p1 = fun(k, iseed);
+            let p2 = fun(k, iseed + sp);
+            ez12.line(scl*p1.x, scl*p1.y, scl*p2.x, scl*p2.y);
+        }
+    }
+
+    ez12.linecolor(fgcolor);
+    ez12.fillcolor(color4);
+    let rseed = (0.4 + (tmax-2)/50) * scl;
+
+    for (t = 0; t <= tmax; t++)
+    {
+        let p = fun(k, t);
+        let t0 = t - 10;
+        if (t0 < 0) t0 = 0;
+        let rseed = scl * (0.4 + Math.sqrt(t) * 0.5);
+        ez12.circle(scl*p.x, scl*p.y, rseed);
+    }
+
+}
+
+window.addEventListener('load', function(){
+    ez12.setup();
+    ez12.onResize();
+
+    let ez12_val_x = document.getElementById('ez12_val_i');
+    new Slider(document.getElementById('ez12_slider_container'), function (x) {
+        ez12.tmax = Math.pow(10, 2+x);
+        ez12_val_x.innerHTML = 'i<sub>max</sub> = ' + parseInt(ez12.tmax);
+        ez12.run();
+    }, undefined, 0);
+
+    let segsn1 = [ 8, 13, 21, 34];
+    let segsn2 = [13, 21, 34, 55];
+    let segs = ['8,13', '13,21', '21,34', '34,55'];
+    let ez12_val_n1 = document.getElementById('ez12_val_n1');
+    let ez12_val_n2 = document.getElementById('ez12_val_n2');
+    new SegmentedControl(document.getElementById('ez12_seg_container'), function (x) {
+            ez12.n1 = segsn1[x];
+            ez12.n2 = segsn2[x];
+            ez12_val_n1.innerHTML = 'N<sub>1</sub> = ' + ez12.n1;
+            ez12_val_n2.innerHTML = 'N<sub>2</sub> = ' + ez12.n2;
+            ez12.run();
+        },
+        segs, 0
+    );
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+    </script>
+</body>
+</html>
